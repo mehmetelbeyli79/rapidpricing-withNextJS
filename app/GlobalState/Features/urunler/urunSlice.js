@@ -4,12 +4,16 @@ export const urunSlice = createSlice({
   name: "urunler",
   initialState: {
     urunler: [
-      { urunId: "", urunAd: "", urunFiyat: "", urunKategori: "", urunStok: "" },
+      
     ],
   },
   reducers: {
     urunEkle: (state,action) => {
         state.urunler.push(action.payload);
+        const storedUrunler = JSON.parse(localStorage.getItem('urunler'));
+        const updatedUrunler = storedUrunler ? [...storedUrunler,action.payload] : [action.payload];
+        localStorage.setItem('urunler', JSON.stringify(updatedUrunler));
+       // localStorage.setItem('urunler', JSON.stringify(state.urunler));
     },
   },
 });
