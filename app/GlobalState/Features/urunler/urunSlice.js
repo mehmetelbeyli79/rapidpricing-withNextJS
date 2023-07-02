@@ -34,11 +34,9 @@ export const urunSlice = createSlice({
       localStorage.setItem("urunler", JSON.stringify(updatedKategoriler));
     },
     urunGuncelle: (state, action) => {
-      //console.log(state.urunler);
-      const storedUrunler = JSON.parse(localStorage.getItem("urunler"));
       const { urunId, urunAd, urunFiyat, urunKategori, urunStok } =
         action.payload;
-      // urunId'si eşleşen ürünü güncelle
+        const storedUrunler = state.urunler;
       const updatedUrunler = storedUrunler.map((urun) => {
         if (urun.urunId === urunId) {
           return {
@@ -51,21 +49,27 @@ export const urunSlice = createSlice({
         }
         return urun;
       });
-      // Güncellenmiş ürünleri localStorage'a kaydet
       localStorage.setItem("urunler", JSON.stringify(updatedUrunler));
-      return updatedUrunler;
     },
     urunSil: (state, action) => {
       const storedUrunler = JSON.parse(localStorage.getItem("urunler"));
+      //const storedUrunler = state.urunler;
       const urunId = action.payload;
       // urunId'si eşleşen ürünü sil
       const updatedUrunler = storedUrunler.filter(
         (urun) => urun.urunId !== urunId
       );
-      // Güncellenmiş ürünleri localStorage'a kaydet
+      const urunIndex = state.urunler.findIndex(
+        (urun) => urun.urunId === urunId
+      );
+      if (urunIndex !== -1) {
+        state.urunler.splice(urunIndex, 1);
+      }
       localStorage.setItem("urunler", JSON.stringify(updatedUrunler));
-      return updatedUrunler;
-    },
+      //return updatedUrunler;
+      
+    }
+  
   },
 });
 export const { urunEkle, updateKategori, urunGuncelle, urunSil } =

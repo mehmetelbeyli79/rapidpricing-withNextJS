@@ -10,10 +10,11 @@ function Kategori() {
   const [urunler, setUrunler] = useState([]);
   const [kategori, setKategori] = useState("");
   const [kategoriGuncelle, setKategoriGuncelle] = useState(false);
-  const [kategoriDegisim,setKategoriDegisim]=useState(false);// Kategori Güncellemesini Algılaması için
-  const handleKategoriDegisim=()=>{ // Bu fonksiyon child componentten gelen kategori değişimini algılar.
+  const [kategoriDegisim, setKategoriDegisim] = useState(false); // Kategori Güncellemesini Algılaması için
+  const handleKategoriDegisim = () => {
+    // Bu fonksiyon child componentten gelen kategori değişimini algılar.
     setKategoriDegisim(!kategoriDegisim);
-  }
+  };
   const handleKategoriGuncelleClick = (ad) => {
     setKategori(ad);
     setKategoriGuncelle(!kategoriGuncelle);
@@ -34,7 +35,7 @@ function Kategori() {
         setUrunler(storedUrunler);
       }
     }
-  }, [urunDegisim,kategoriDegisim]);
+  }, [urunDegisim, kategoriDegisim]);
   const kategorilendirilmisUrunler = {};
   urunler.forEach((urun) => {
     const kategoriAdi = urun.urunKategori;
@@ -65,7 +66,8 @@ function Kategori() {
                   );
                 }}
               />
-              <FaTrash className="ms-2 mr-0"
+              <FaTrash
+                className="ms-2 mr-0"
                 onClick={(e) => {
                   handleKategoriSilClick(
                     kategorilendirilmisUrunler[kategoriAdi][0].urunKategori
@@ -78,7 +80,12 @@ function Kategori() {
           </h1>
           {kategori ===
             kategorilendirilmisUrunler[kategoriAdi][0].urunKategori &&
-            kategoriGuncelle && <KategoriGuncelle kategori={kategori} kategoriKontrol={handleKategoriDegisim} />}
+            kategoriGuncelle && (
+              <KategoriGuncelle
+                kategori={kategori}
+                kategoriKontrol={handleKategoriDegisim}
+              />
+            )}
 
           <ul className="space-y-4 mt-4 ">
             {kategorilendirilmisUrunler[kategoriAdi].map((urun) => (
@@ -86,7 +93,7 @@ function Kategori() {
                 key={urun.urunId}
                 className="bg-white rounded-lg shadow p-4 md:w-3/4"
               >
-                <Urunler urun={urun}/>
+                <Urunler urun={urun} />
               </li>
             ))}
           </ul>
