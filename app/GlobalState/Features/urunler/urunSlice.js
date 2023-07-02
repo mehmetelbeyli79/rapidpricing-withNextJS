@@ -36,6 +36,7 @@ export const urunSlice = createSlice({
     urunGuncelle: (state, action) => {
       const { urunId, urunAd, urunFiyat, urunKategori, urunStok } =
         action.payload;
+        
         const storedUrunler = state.urunler;
       const updatedUrunler = storedUrunler.map((urun) => {
         if (urun.urunId === urunId) {
@@ -49,6 +50,12 @@ export const urunSlice = createSlice({
         }
         return urun;
       });
+      const urunIndex = state.urunler.findIndex(
+        (urun) => urun.urunId === urunId
+      );
+      if (urunIndex !== -1) {
+        state.urunler[urunIndex] = updatedUrunler[urunIndex];
+      }
       localStorage.setItem("urunler", JSON.stringify(updatedUrunler));
     },
     urunSil: (state, action) => {
