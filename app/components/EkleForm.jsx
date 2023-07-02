@@ -7,8 +7,8 @@ import {
 } from "../GlobalState/Features/urunler/urunSlice";
 import { v4 as uuidv4 } from "uuid";
 function EkleForm() {
-  const urunler = useSelector(selectUrunler);
-  console.log("urunler", urunler);
+  //const urunler = useSelector(selectUrunler);
+ // console.log("urunler", urunler);
   const dispatch = useDispatch();
   const submitForm = (e) => {
     e.preventDefault();

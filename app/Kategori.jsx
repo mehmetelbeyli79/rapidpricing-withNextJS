@@ -3,9 +3,30 @@ import React, { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import { selectUrunler } from "./GlobalState/Features/urunler/urunSlice";
 import { FaEdit, FaTrash } from "react-icons/fa";
+import KategoriGuncelle from "./components/KategoriGuncelle";
+import Urunler from "./Urunler";
 function Kategori() {
   const urunDegisim = useSelector(selectUrunler); //Redux'ta değişim varsa useEffect ile localStorage güncellenir.
   const [urunler, setUrunler] = useState([]);
+  const [kategori, setKategori] = useState("");
+  const [kategoriGuncelle, setKategoriGuncelle] = useState(false);
+  const [kategoriDegisim,setKategoriDegisim]=useState(false);// Kategori Güncellemesini Algılaması için
+  const handleKategoriDegisim=()=>{ // Bu fonksiyon child componentten gelen kategori değişimini algılar.
+    setKategoriDegisim(!kategoriDegisim);
+  }
+  const handleKategoriGuncelleClick = (ad) => {
+    setKategori(ad);
+    setKategoriGuncelle(!kategoriGuncelle);
+  };
+  const handleKategoriSilClick = (ad) => {
+    const storedUrunler = JSON.parse(localStorage.getItem("urunler"));
+    const updatedUrunler = storedUrunler.filter(
+      (urun) => urun.urunKategori !== ad
+    );
+    localStorage.setItem("urunler", JSON.stringify(updatedUrunler));
+    setUrunler(updatedUrunler);
+  };
+
   useEffect(() => {
     if (typeof window !== "undefined") {
       const storedUrunler = JSON.parse(localStorage.getItem("urunler"));
@@ -13,7 +34,7 @@ function Kategori() {
         setUrunler(storedUrunler);
       }
     }
-  }, [urunDegisim]);
+  }, [urunDegisim,kategoriDegisim]);
   const kategorilendirilmisUrunler = {};
   urunler.forEach((urun) => {
     const kategoriAdi = urun.urunKategori;
@@ -37,11 +58,27 @@ function Kategori() {
               Kategorisi
             </div>
             <span className=" px-4 py-2 rounded-lg flex ">
-              <FaEdit />
-              <FaTrash className="ms-2 mr-0" />
+              <FaEdit
+                onClick={(e) => {
+                  handleKategoriGuncelleClick(
+                    kategorilendirilmisUrunler[kategoriAdi][0].urunKategori
+                  );
+                }}
+              />
+              <FaTrash className="ms-2 mr-0"
+                onClick={(e) => {
+                  handleKategoriSilClick(
+                    kategorilendirilmisUrunler[kategoriAdi][0].urunKategori
+                  );
+                }}
+              />
             </span>
+
             {"   "}
           </h1>
+          {kategori ===
+            kategorilendirilmisUrunler[kategoriAdi][0].urunKategori &&
+            kategoriGuncelle && <KategoriGuncelle kategori={kategori} kategoriKontrol={handleKategoriDegisim} />}
 
           <ul className="space-y-4 mt-4 ">
             {kategorilendirilmisUrunler[kategoriAdi].map((urun) => (
@@ -49,17 +86,7 @@ function Kategori() {
                 key={urun.urunId}
                 className="bg-white rounded-lg shadow p-4 md:w-3/4"
               >
-                <div className="flex items-center">
-                  <div className="ml-4">
-                    <h2 className="text-lg font-semibold">{urun.urunAd}</h2>
-                    <p className="text-gray-500">
-                      Fiyatı : {urun.urunFiyat} TL
-                    </p>
-                    <p className="text-gray-500">
-                      Stok Durumu : {urun.urunStok}
-                    </p>
-                  </div>
-                </div>
+                <Urunler urun={urun}/>
               </li>
             ))}
           </ul>
