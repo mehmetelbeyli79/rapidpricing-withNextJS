@@ -1,6 +1,6 @@
 "use client";
 import { createSlice } from "@reduxjs/toolkit";
-
+import Swal from "sweetalert2";
 const getInitialUrunler = () => {
   const storedUrunler = localStorage.getItem("urunler");
   if (storedUrunler) {
@@ -22,6 +22,7 @@ export const urunSlice = createSlice({
         ? [...storedUrunler, action.payload]
         : [action.payload];
       localStorage.setItem("urunler", JSON.stringify(updatedUrunler));
+      Swal.fire("Kayıt Başarılı!", "Ürün başarıyla eklendi!", "success");
     },
 
     updateKategori: (state, action) => {
@@ -36,8 +37,8 @@ export const urunSlice = createSlice({
     urunGuncelle: (state, action) => {
       const { urunId, urunAd, urunFiyat, urunKategori, urunStok } =
         action.payload;
-        
-        const storedUrunler = state.urunler;
+
+      const storedUrunler = JSON.parse(localStorage.getItem("urunler"));
       const updatedUrunler = storedUrunler.map((urun) => {
         if (urun.urunId === urunId) {
           return {
@@ -60,23 +61,20 @@ export const urunSlice = createSlice({
     },
     urunSil: (state, action) => {
       const storedUrunler = JSON.parse(localStorage.getItem("urunler"));
-      //const storedUrunler = state.urunler;
-      const urunId = action.payload;
-      // urunId'si eşleşen ürünü sil
-      const updatedUrunler = storedUrunler.filter(
-        (urun) => urun.urunId !== urunId
-      );
-      const urunIndex = state.urunler.findIndex(
-        (urun) => urun.urunId === urunId
-      );
-      if (urunIndex !== -1) {
-        state.urunler.splice(urunIndex, 1);
-      }
-      localStorage.setItem("urunler", JSON.stringify(updatedUrunler));
-      //return updatedUrunler;
-      
-    }
-  
+          //const storedUrunler = state.urunler;
+          const urunId = action.payload;
+          // urunId'si eşleşen ürünü sil
+          const updatedUrunler = storedUrunler.filter(
+            (urun) => urun.urunId !== urunId
+          );
+          const urunIndex = state.urunler.findIndex(
+            (urun) => urun.urunId === urunId
+          );
+          if (urunIndex !== -1) {
+            state.urunler.splice(urunIndex, 1);
+          }
+          localStorage.setItem("urunler", JSON.stringify(updatedUrunler));
+    },
   },
 });
 export const { urunEkle, updateKategori, urunGuncelle, urunSil } =

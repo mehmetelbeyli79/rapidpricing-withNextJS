@@ -1,5 +1,6 @@
 "use client";
 import React, { useState } from "react";
+import Swal from "sweetalert2";
 import {
   urunGuncelle,
   urunSil,
@@ -29,21 +30,50 @@ function Urunler({ urun }) {
     }
   };
   const handleGuncelle = () => {
-    const formData = {
-      urunId: urunId,
-      urunAd: urunAd,
-      urunFiyat: urunFiyat,
-      urunKategori: urunKategori,
-      urunStok: urunStok,
-    };
-   
-     dispatch(urunGuncelle(formData));
+    Swal.fire({
+      title: 'Güncellemek İstediğinize Emin misiniz?',
+      showDenyButton: true,
+      showCancelButton: true,
+      confirmButtonText: 'Evet, Güncelle',
+      denyButtonText: `Hayır, Güncelleme`,
+    }).then((result) => {
+      /* Read more about isConfirmed, isDenied below */
+      if (result.isConfirmed) {
+        const formData = {
+          urunId: urunId,
+          urunAd: urunAd,
+          urunFiyat: urunFiyat,
+          urunKategori: urunKategori,
+          urunStok: urunStok,
+        };
+       
+         dispatch(urunGuncelle(formData));
+        Swal.fire('Güncellendi!', '', 'success')
+      } else if (result.isDenied) {
+        Swal.fire('Güncelleme İşlemi İptal Edildi!', '', 'info')
+      }
+    })
+    
     
   };
 
   const handleSilClick = () => {
-  
-   dispatch(urunSil(urunId));
+    Swal.fire({
+      title: 'Silmek İstediğinize Emin misiniz?',
+      showDenyButton: true,
+      showCancelButton: true,
+      confirmButtonText: 'Evet, Sil',
+      denyButtonText: `Hayır, Silme`,
+    }).then((result) => {
+      /* Read more about isConfirmed, isDenied below */
+      if (result.isConfirmed) {
+        dispatch(urunSil(urunId));
+        Swal.fire('Silindi!', '', 'success')
+      } else if (result.isDenied) {
+        Swal.fire('Silme İşlemi İptal Edildi!', '', 'info')
+      }
+    })
+   
     
   };
 

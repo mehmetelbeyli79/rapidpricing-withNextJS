@@ -5,6 +5,7 @@ import { selectUrunler } from "./GlobalState/Features/urunler/urunSlice";
 import { FaEdit, FaTrash } from "react-icons/fa";
 import KategoriGuncelle from "./components/KategoriGuncelle";
 import Urunler from "./Urunler";
+import Swal from "sweetalert2";
 function Kategori() {
   const urunDegisim = useSelector(selectUrunler); //Redux'ta değişim varsa useEffect ile localStorage güncellenir.
   const [urunler, setUrunler] = useState([]);
@@ -20,12 +21,26 @@ function Kategori() {
     setKategoriGuncelle(!kategoriGuncelle);
   };
   const handleKategoriSilClick = (ad) => {
-    const storedUrunler = JSON.parse(localStorage.getItem("urunler"));
-    const updatedUrunler = storedUrunler.filter(
-      (urun) => urun.urunKategori !== ad
-    );
-    localStorage.setItem("urunler", JSON.stringify(updatedUrunler));
-    setUrunler(updatedUrunler);
+    Swal.fire({
+      title: "Kategori Silinsin mi?Tüm Ürünler Silinecektir.",
+      showDenyButton: true,
+      showCancelButton: true,
+      confirmButtonText: "Evet, Sil",
+      denyButtonText: `Hayır, Silme`,
+    }).then((result) => {
+      /* Read more about isConfirmed, isDenied below */
+      if (result.isConfirmed) {
+        const storedUrunler = JSON.parse(localStorage.getItem("urunler"));
+        const updatedUrunler = storedUrunler.filter(
+          (urun) => urun.urunKategori !== ad
+        );
+        localStorage.setItem("urunler", JSON.stringify(updatedUrunler));
+        setUrunler(updatedUrunler);
+        Swal.fire("Tüm Kategori Silindi!", "", "success");
+      } else if (result.isDenied) {
+        Swal.fire("Silme İşlemi İptal Edildi!", "", "info");
+      }
+    });
   };
 
   useEffect(() => {
