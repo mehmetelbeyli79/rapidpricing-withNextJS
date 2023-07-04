@@ -78,7 +78,7 @@ function Urunler({ urun }) {
   };
 
   return (
-    <div className="flex-col ">
+    <div className="flex-col">
       <form>
         <div className="ml-4">
           <h2 className="text-lg font-semibold">
@@ -113,7 +113,7 @@ function Urunler({ urun }) {
           <button
             onClick={() => handleGuncelle()}
             type="button"
-            className="px-4 py-2 bg-blue-500 text-white rounded"
+            className="px-4 py-2 bg-gray-700 text-white rounded"
           >
             Güncelle
           </button>

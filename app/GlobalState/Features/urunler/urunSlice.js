@@ -6,7 +6,7 @@ const getInitialUrunler = () => {
   if (storedUrunler) {
     return JSON.parse(storedUrunler);
   } else {
-    return []; // Varsayılan başlangıç durumu
+    return [];
   }
 };
 export const urunSlice = createSlice({
@@ -61,23 +61,29 @@ export const urunSlice = createSlice({
     },
     urunSil: (state, action) => {
       const storedUrunler = JSON.parse(localStorage.getItem("urunler"));
-          //const storedUrunler = state.urunler;
-          const urunId = action.payload;
-          // urunId'si eşleşen ürünü sil
-          const updatedUrunler = storedUrunler.filter(
-            (urun) => urun.urunId !== urunId
-          );
-          const urunIndex = state.urunler.findIndex(
-            (urun) => urun.urunId === urunId
-          );
-          if (urunIndex !== -1) {
-            state.urunler.splice(urunIndex, 1);
-          }
-          localStorage.setItem("urunler", JSON.stringify(updatedUrunler));
+      const urunId = action.payload;
+      const updatedUrunler = storedUrunler.filter(
+        (urun) => urun.urunId !== urunId
+      );
+      const urunIndex = state.urunler.findIndex(
+        (urun) => urun.urunId === urunId
+      );
+      if (urunIndex !== -1) {
+        state.urunler.splice(urunIndex, 1);
+      }
+      localStorage.setItem("urunler", JSON.stringify(updatedUrunler));
+    },
+    urunAra: (state, action) => {
+      const storedUrunler = JSON.parse(localStorage.getItem("urunler"));
+      const { urunAd } = action.payload;
+      const filteredUrunler = storedUrunler.filter((urun) =>
+        urun.urunAd.toLowerCase().includes(urunAd.toLowerCase())
+      );
+      state.urunler = filteredUrunler;
     },
   },
 });
-export const { urunEkle, updateKategori, urunGuncelle, urunSil } =
+export const { urunEkle, updateKategori, urunGuncelle, urunSil, urunAra } =
   urunSlice.actions;
 export const selectUrunler = (state) => state.urunler.urunler;
 export default urunSlice.reducer;

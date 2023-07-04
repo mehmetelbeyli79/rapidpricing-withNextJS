@@ -11,12 +11,12 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body className={`${inter.className}`}>
+      <body className={`${inter.className} bg-zinc-200`}>
         <div className="bg-gray-950 h-6 flex w-full"></div>
-        <h2 className="sm:text-9xl text-center mt-5">&</h2>
-        <h2 className="sm:text-5xl text-center mt-5">RAPID PRICE APP</h2>
+        <h2 className="sm:text-9xl text-6xl text-center mt-5">&</h2>
+        <h2 className="sm:text-5xl text-2xl text-center mt-5">RAPID PRICE APP</h2>
         <Providers>{children}</Providers>
-        <div className="bg-gray-950 h-6 flex w-full"></div>
+        <div className="bg-gray-950 h-6 flex w-full text-white text-xs items-center pl-3">Developed By Mehmet ELBEYLİ</div>
       </body>
     </html>
   );

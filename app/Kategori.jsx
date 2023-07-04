@@ -60,13 +60,13 @@ function Kategori() {
     kategorilendirilmisUrunler[kategoriAdi].push(urun);
   });
   return (
-    <div className="flex md:flex-row flex-wrap md:p-24 p-6 justify-center w-full">
+    <div className="flex md:flex-row flex-wrap md:p-10 p-6 justify-between items-center w-full">
       {Object.keys(kategorilendirilmisUrunler).map((kategoriAdi) => (
         <div
           key={kategoriAdi}
           className="md:w-2/4 w-full mt-4 flex-col justify-center items-center"
         >
-          <h1 className="text-2xl font-extrabold text-purple-500 tracking-wide flex items-center justify-between md:w-3/4">
+          <h1 className="text-xl font-extrabold text-gray-700 tracking-wide flex items-center justify-between md:w-11/12">
             <div>
               <span className="bg-yellow-300 px-4 py-2 rounded-lg">
                 {kategoriAdi}
@@ -102,11 +102,11 @@ function Kategori() {
               />
             )}
 
-          <ul className="space-y-4 mt-4 ">
+          <ul className="space-y-4 mt-4">
             {kategorilendirilmisUrunler[kategoriAdi].map((urun) => (
               <li
                 key={urun.urunId}
-                className="bg-white rounded-lg shadow p-4 md:w-3/4"
+                className="bg-white rounded-lg shadow p-4 md:w-11/12 w-full"
               >
                 <Urunler urun={urun} />
               </li>
