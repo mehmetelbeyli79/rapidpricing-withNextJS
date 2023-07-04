@@ -9,12 +9,25 @@ const getInitialUrunler = () => {
     return [];
   }
 };
+const getInitialSirket = () => {
+  const storedSirket = localStorage.getItem("sirket");
+  if (storedSirket) {
+    return JSON.parse(storedSirket);
+  } else {
+    return "İsimsiz";
+  }
+}
 export const urunSlice = createSlice({
   name: "urunler",
   initialState: {
     urunler: getInitialUrunler(),
+    isyeri: getInitialSirket(),
   },
   reducers: {
+    sirketEkle: (state, action) => {
+      state.isyeri = action.payload.sirketAd;
+      localStorage.setItem("sirket", JSON.stringify(action.payload.sirketAd));
+    },
     urunEkle: (state, action) => {
       state.urunler.push(action.payload);
       const storedUrunler = JSON.parse(localStorage.getItem("urunler"));
@@ -83,7 +96,8 @@ export const urunSlice = createSlice({
     },
   },
 });
-export const { urunEkle, updateKategori, urunGuncelle, urunSil, urunAra } =
+export const { urunEkle, updateKategori, urunGuncelle, urunSil, urunAra ,sirketEkle } =
   urunSlice.actions;
 export const selectUrunler = (state) => state.urunler.urunler;
+export const selectSirket = (state) => state.urunler.isyeri;
 export default urunSlice.reducer;
