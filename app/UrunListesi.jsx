@@ -4,6 +4,7 @@ import { useSelector } from "react-redux";
 import { selectUrunler } from "./GlobalState/Features/urunler/urunSlice";
 function UrunListesi() {
   const tumUrunler = useSelector(selectUrunler);
+  console.log(typeof tumUrunler);
   return (
     <div className="flex w-full p-6 overflow-x-auto shadow-md rounded-md sm:rounded-lg">
       <table className="w-full text-sm text-left bg-gray-700 text-gray-500 dark:text-gray-400 rounded-sm">
@@ -24,7 +25,7 @@ function UrunListesi() {
           </tr>
         </thead>
         <tbody>
-          {tumUrunler.length === 0 ? (
+          {tumUrunler.length == 0 ? (
             <tr className="bg-white border-b text-zinc-900 dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
               <td colSpan={5} className="px-6 py-4">
                 Ürün Bulunamadı!!!

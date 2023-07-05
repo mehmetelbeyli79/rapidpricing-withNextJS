@@ -34,7 +34,10 @@ function Kategori() {
         const updatedUrunler = storedUrunler.filter(
           (urun) => urun.urunKategori !== ad
         );
-        localStorage.setItem("urunler", JSON.stringify(updatedUrunler));
+        if (typeof window !== 'undefined') {
+          localStorage.setItem("urunler", JSON.stringify(updatedUrunler));
+        }
+        
         setUrunler(updatedUrunler);
         Swal.fire("Tüm Kategori Silindi!", "", "success");
       } else if (result.isDenied) {

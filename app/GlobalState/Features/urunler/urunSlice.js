@@ -2,21 +2,25 @@
 import { createSlice } from "@reduxjs/toolkit";
 import Swal from "sweetalert2";
 const getInitialUrunler = () => {
-  const storedUrunler = localStorage.getItem("urunler");
-  if (storedUrunler) {
-    return JSON.parse(storedUrunler);
-  } else {
-    return [];
+  if (typeof window !== "undefined") {
+    const storedUrunler = localStorage.getItem("urunler");
+    if (storedUrunler) {
+      return JSON.parse(storedUrunler);
+    } else {
+      return [];
+    }
   }
 };
 const getInitialSirket = () => {
-  const storedSirket = localStorage.getItem("sirket");
-  if (storedSirket) {
-    return JSON.parse(storedSirket);
-  } else {
-    return "İsimsiz";
+  if (typeof window !== "undefined") {
+    const storedSirket = localStorage.getItem("sirket");
+    if (storedSirket) {
+      return JSON.parse(storedSirket);
+    } else {
+      return "İsimsiz";
+    }
   }
-}
+};
 export const urunSlice = createSlice({
   name: "urunler",
   initialState: {
@@ -26,15 +30,19 @@ export const urunSlice = createSlice({
   reducers: {
     sirketEkle: (state, action) => {
       state.isyeri = action.payload.sirketAd;
+      if (typeof window !== "undefined") {
       localStorage.setItem("sirket", JSON.stringify(action.payload.sirketAd));
+      }
     },
     urunEkle: (state, action) => {
       state.urunler.push(action.payload);
+      if (typeof window !== "undefined") {
       const storedUrunler = JSON.parse(localStorage.getItem("urunler"));
       const updatedUrunler = storedUrunler
         ? [...storedUrunler, action.payload]
         : [action.payload];
       localStorage.setItem("urunler", JSON.stringify(updatedUrunler));
+      }
       Swal.fire("Kayıt Başarılı!", "Ürün başarıyla eklendi!", "success");
     },
 
@@ -45,12 +53,14 @@ export const urunSlice = createSlice({
         }
         return urun;
       });
+      if (typeof window !== "undefined") {
       localStorage.setItem("urunler", JSON.stringify(updatedKategoriler));
+      }
     },
     urunGuncelle: (state, action) => {
       const { urunId, urunAd, urunFiyat, urunKategori, urunStok } =
         action.payload;
-
+        if (typeof window !== "undefined") {
       const storedUrunler = JSON.parse(localStorage.getItem("urunler"));
       const updatedUrunler = storedUrunler.map((urun) => {
         if (urun.urunId === urunId) {
@@ -64,15 +74,20 @@ export const urunSlice = createSlice({
         }
         return urun;
       });
+    
       const urunIndex = state.urunler.findIndex(
         (urun) => urun.urunId === urunId
       );
       if (urunIndex !== -1) {
         state.urunler[urunIndex] = updatedUrunler[urunIndex];
       }
+      if (typeof window !== "undefined") {
       localStorage.setItem("urunler", JSON.stringify(updatedUrunler));
+      }
+    }
     },
     urunSil: (state, action) => {
+      if (typeof window !== "undefined") {
       const storedUrunler = JSON.parse(localStorage.getItem("urunler"));
       const urunId = action.payload;
       const updatedUrunler = storedUrunler.filter(
@@ -85,19 +100,28 @@ export const urunSlice = createSlice({
         state.urunler.splice(urunIndex, 1);
       }
       localStorage.setItem("urunler", JSON.stringify(updatedUrunler));
+    }
     },
     urunAra: (state, action) => {
+      if (typeof window !== "undefined") {
       const storedUrunler = JSON.parse(localStorage.getItem("urunler"));
       const { urunAd } = action.payload;
       const filteredUrunler = storedUrunler.filter((urun) =>
         urun.urunAd.toLowerCase().includes(urunAd.toLowerCase())
       );
       state.urunler = filteredUrunler;
+      }
     },
   },
 });
-export const { urunEkle, updateKategori, urunGuncelle, urunSil, urunAra ,sirketEkle } =
-  urunSlice.actions;
+export const {
+  urunEkle,
+  updateKategori,
+  urunGuncelle,
+  urunSil,
+  urunAra,
+  sirketEkle,
+} = urunSlice.actions;
 export const selectUrunler = (state) => state.urunler.urunler;
 export const selectSirket = (state) => state.urunler.isyeri;
 export default urunSlice.reducer;
