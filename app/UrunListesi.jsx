@@ -3,7 +3,7 @@ import React from "react";
 import { useSelector } from "react-redux";
 import { selectUrunler } from "./GlobalState/Features/urunler/urunSlice";
 function UrunListesi() {
-  const tumUrunler = useSelector(selectUrunler);
+  const tumUrunler = useSelector(selectUrunler) || [];
   return (
     <div className="flex w-full p-6 overflow-x-auto shadow-md rounded-md sm:rounded-lg">
       <table className="w-full text-sm text-left bg-gray-700 text-gray-500 dark:text-gray-400 rounded-sm">
