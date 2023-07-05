@@ -25,9 +25,9 @@ function UrunAra() {
       
       </div>
     </section>
-    <h1 class="mt-8 text-center text-2xl font-extrabold leading-none tracking-tight text-gray-900 md:text-3xl lg:text-5xl dark:text-white">
+    <h1 className="mt-8 text-center text-2xl font-extrabold leading-none tracking-tight text-gray-900 md:text-3xl lg:text-5xl dark:text-white">
         {sirket + " "}
-        <mark class="px-2 text-white bg-blue-600 rounded dark:bg-blue-500">
+        <mark className="px-2 text-white bg-blue-600 rounded dark:bg-blue-500">
           ürün
         </mark>{" "}
         fiyatları
